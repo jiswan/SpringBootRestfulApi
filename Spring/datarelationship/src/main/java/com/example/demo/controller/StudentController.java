@@ -1,13 +1,11 @@
 package com.example.demo.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Student;
@@ -15,6 +13,7 @@ import com.example.demo.repo.BookRepository;
 import com.example.demo.repo.StudentRepository;
 
 import java.util.Iterator;
+import java.util.List;
 
 @Controller
 public class StudentController {
@@ -32,7 +31,7 @@ public class StudentController {
 		return new ResponseEntity<>(savedBook,HttpStatus.CREATED);
 	}
 	@PostMapping("/add/student")
-	public ResponseEntity<Student> addStudent(@RequestBody Student student)
+	public ResponseEntity<Student> addStudent(@Valid @RequestBody Student student)
 	{
 		
 		if(student.getBook()==null|| student.getBook().getId()==0)
@@ -91,5 +90,19 @@ public class StudentController {
 		existingBook.setBookName(book.getBookName());
 		Book savedBook = bookRepository.save(existingBook);
 		return new ResponseEntity<>(savedBook,HttpStatus.OK);
+	}
+
+	@GetMapping("/student/search")
+	public ResponseEntity<List<Student>> searchStudentByName(@RequestParam String name)
+	{
+		List<Student> studentList = studentRepository.findStudentByName(name);
+		return new ResponseEntity<>(studentList,HttpStatus.OK);
+	}
+
+	@GetMapping("/book/search")
+	public ResponseEntity<List<Book>> searchBookByName(@RequestParam String bookname)
+	{
+		List<Book> bookList = bookRepository.findByBookName(bookname);
+		return new ResponseEntity<>(bookList,HttpStatus.OK);
 	}
 }

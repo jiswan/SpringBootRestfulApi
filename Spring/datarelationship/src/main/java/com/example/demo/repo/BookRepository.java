@@ -5,7 +5,11 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.Book;
 
+import java.util.List;
+
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long>{
 
+
+    List<Book> findByBookName(String bookname);
 }

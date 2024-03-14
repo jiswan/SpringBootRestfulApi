@@ -1,8 +1,10 @@
 package com.bankname.banknameweb.service;
 
+import com.bankname.banknameweb.entity.Account;
 import com.bankname.banknameweb.entity.User;
 
 public interface AccountService {
 
- public User registerUser(User user);
+
+    Account createAccount(User savedUser);
 }
